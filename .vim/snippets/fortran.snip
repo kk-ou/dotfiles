@@ -5,6 +5,11 @@ options head
 		${2}
 	end program $1
 
+snippet imp
+options head
+  implicit none
+
+
 snippet sua
 abbr subroutine
 options head
@@ -18,9 +23,8 @@ snippet su
 abbr subroutine
 options head
 	subroutine ${1:`expand('%:r')`}
-		use ${2:comvar}
 		implicit none
-		${3}
+    ${2}
 	end subroutine $1
 
 snippet mo
@@ -28,7 +32,6 @@ abbr module
 options head
 	module ${1:`expand('%:r')`}
 		implicit none
-		save
 		${2}
 	end module $1
 
@@ -36,6 +39,7 @@ snippet fu
 abbr function
 options head
 	function ${1:}(${2})
+    implicit none
 		${3}
 	end function $1
 
@@ -47,6 +51,7 @@ options head
 snippet in
 abbr integer
 options head
+  implicit none
 	integer ::
 
 snippet ini
@@ -59,25 +64,40 @@ abbr integer intent(out)
 options head
 	integer, intent(out) ::
 
-snippet rep
-abbr real parameter
+snippet dup
+abbr double precision parameter
 options head
-	real, parameter ::
+	double precision, parameter ::
 
-snippet re
-abbr real
+snippet cmp
+abbr double precision parameter
 options head
-	real ::
+	complex(kind(0d0)) ::
 
-snippet rei
-abbr real intent(in)
+snippet cmpa
+abbr double precision allocatable
 options head
-	real, intent(in)  ::
+	complex(kind(0d0)), allocatable ::
 
-snippet reo
-abbr real intent(out)
+snippet cmpp
+abbr double precision allocatable
 options head
-	real, intent(out) ::
+	complex(kind(0d0)), parameter ::
+
+snippet du
+abbr dub
+options head
+	double precision ::
+
+snippet dui
+abbr double precision  intent(in)
+options head
+	dobule precision, intent(in)  ::
+
+snippet duo
+abbr double precision intent(out)
+options head
+	double precision, intent(out) ::
 
 snippet ind
 abbr integer dimension
@@ -94,20 +114,25 @@ abbr integer dimension intent(out)
 options head
 	integer, dimension(${1}), intent(out) :: ${2}
 
-snippet red
-abbr real dimension
+snippet dud
+abbr double precision dimension
 options head
-	real, dimension(${1::})${2:#:, allocatable} :: ${3}
+	double precision, dimension(${1::})${2:#:, allocatable} :: ${3}
 
-snippet redi
-abbr real dimension intent(in)
+snippet dua
+abbr double precision allocatable
 options head
-	real, dimension(${1}), intent(in)  :: ${2}
+	double precision, allocatable ::
 
-snippet redo
-abbr real dimension intent(out)
+snippet dui
+abbr double precision dimension intent(in)
 options head
-	real, dimension(${1}), intent(out) :: ${2}
+	double precision, dimension(${1}), intent(in)  :: ${2}
+
+snippet dudo
+abbr double precision dimension intent(out)
+options head
+	double precision, dimension(${1}), intent(out) :: ${2}
 
 snippet ch
 abbr character
@@ -124,18 +149,18 @@ abbr logical
 options head
 	logical :: ${1:fileExsit}
 
-endif
 snippet if
 abbr if
 options head
-	if (${1}) ${2}
+	if (${1}) then
+
   endif
 
 snippet ift
 abbr if then
 options head
-	if (${1}) then
-		${2}
+	if (${1}) ${2}
+    ${3}
 	end if
 
 snippet read
@@ -151,9 +176,7 @@ options head
 snippet op
 abbr open
 options head
-	open(${1:11},file=${2},status=${3:#:old}${4:#:,position='append'})
-	${5}
-	close($1)
+	open(${1:11},file="${2}",status="${3:#:old}")
 
 snippet se
 abbr select case
@@ -173,6 +196,24 @@ abbr do
 options head
 	do ${1}
 	enddo
+
+snippet class
+abbr do
+options head
+  class(${1}), intent(inout) :: ${2}
+
+snippet al
+options head
+  allocate
+
+snippet dea
+options head
+  deallocate
+
+snippet pro
+abbr procedure
+options head
+  procedure ::
 
 snippet ty
 abbr type
